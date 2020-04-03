@@ -81,17 +81,23 @@ function App() {
     </div>
   )
   const i = (
-    <Input
-      value={input}
-      onChange={(e: any) => {
-        if (e.target.value === 'ndzy') {
-          setInput(e.target.value)
-          setIsShow(true)
-        }
-        setInput(e.target.value)
+    <div
+      style={{
+        margin: '300px 50px',
       }}
-      placeholder="请输入！"
-    />
+    >
+      <Input
+        value={input}
+        onChange={(e: any) => {
+          if (e.target.value === 'ndzy') {
+            setInput(e.target.value)
+            setIsShow(true)
+          }
+          setInput(e.target.value)
+        }}
+        placeholder="请输入！"
+      />
+    </div>
   )
   return <div>{isShow ? app : i}</div>
 }
