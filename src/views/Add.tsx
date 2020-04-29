@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { createHashHistory } from 'history'
 import BraftEditor from 'braft-editor'
 import { Button, Input, message } from 'antd'
 import api from '../http/index'
+import { createHashHistory } from 'history'
+
 const history = createHashHistory()
 
 export default function Add() {
@@ -44,13 +45,27 @@ export default function Add() {
     'separator',
     // 'clear',
   ]
+  const noteSubmit = () => {
+    if (input === '') {
+      message.error('标题不能为空！')
+    } else {
+      api(
+        '/save',
+
+        'POST',
+        {
+          title: input,
+          content: content,
+        }
+      ).then((res) => {
+        message.success('已成功添加！')
+        history.push({ pathname: '/' })
+      })
+    }
+  }
   return (
     <div>
-      <div
-        style={{
-          display: 'flex',
-        }}
-      >
+      <div className="flex-box">
         <Input
           value={input}
           onChange={(e: any) => {
@@ -61,22 +76,7 @@ export default function Add() {
         <Button
           type="primary"
           onClick={() => {
-            if (input === '') {
-              message.error('标题不能为空！')
-            } else {
-              api(
-                '/save',
-
-                'POST',
-                {
-                  title: input,
-                  content: content,
-                }
-              ).then(res => {
-                message.success('已成功添加！')
-                history.push({ pathname: '/' })
-              })
-            }
+            noteSubmit()
           }}
         >
           提交

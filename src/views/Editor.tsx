@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { createHashHistory } from 'history'
 import BraftEditor from 'braft-editor'
 import { Button, Input, message } from 'antd'
 import api from '../http/index'
+import { createHashHistory } from 'history'
+
 const history = createHashHistory()
 
 export default function Editor(props: any) {
@@ -45,6 +46,20 @@ export default function Editor(props: any) {
     'separator',
     // 'clear',
   ]
+  const noteSubmit = () => {
+    if (input === '') {
+      message.error('标题不能为空！')
+    } else {
+      api('/edit', 'POST', {
+        id: id,
+        title: input,
+        content: content,
+      }).then((res: any) => {
+        message.info('编辑成功！')
+        history.push({ pathname: '/' })
+      })
+    }
+  }
   useEffect(() => {
     api(
       '/getNote',
@@ -55,20 +70,17 @@ export default function Editor(props: any) {
           props.location.pathname.lastIndexOf('/') + 1
         ),
       }
-    ).then(res => {
+    ).then((res) => {
       console.log(res.data.data)
       setInput(res.data.data.title)
       setId(res.data.data.id)
       setContent(BraftEditor.createEditorState(res.data.data.content))
     })
   }, [props])
+
   return (
     <div>
-      <div
-        style={{
-          display: 'flex',
-        }}
-      >
+      <div className="flex-box">
         <p></p>
         <Input
           value={input}
@@ -80,18 +92,7 @@ export default function Editor(props: any) {
         <Button
           type="primary"
           onClick={() => {
-            if (input === '') {
-              message.error('标题不能为空！')
-            } else {
-              api('/edit', 'POST', {
-                id: id,
-                title: input,
-                content: content,
-              }).then((res: any) => {
-                message.info('编辑成功！')
-                history.push({ pathname: '/' })
-              })
-            }
+            noteSubmit()
           }}
         >
           提交

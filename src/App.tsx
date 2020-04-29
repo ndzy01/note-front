@@ -17,35 +17,29 @@ const { Header, Footer, Content } = Layout
 
 function App() {
   const [input, setInput] = useState('')
-  const [isShow, setIsShow] = useState(true)
+  const [isShow, setIsShow] = useState(
+    process.env.NODE_ENV === 'development' ? false : true
+  )
   const app = (
     <div>
       {' '}
       <Layout>
-        <Header
-          style={{
-            position: 'fixed',
-            zIndex: 10000,
-            width: '100%',
-            background: '#fff',
-            boxShadow: '0 2px 4px 0 rgba(0,0,0,.05)',
-          }}
-        >
-          <Tooltip title="主页">
+        <Header className="m-header">
+          <Tooltip title="主页" className="m-right">
             <Button
               shape="circle"
               icon={<HomeOutlined />}
               onClick={() => history.push('/')}
             />
           </Tooltip>
-          <Tooltip title="添加">
+          <Tooltip title="添加" className="m-right">
             <Button
               shape="circle"
               icon={<PlusOutlined />}
               onClick={() => history.push('/add')}
             />
           </Tooltip>
-          <Tooltip title="搜索">
+          <Tooltip title="搜索" className="m-right">
             <Button
               shape="circle"
               icon={<SearchOutlined />}
@@ -81,11 +75,7 @@ function App() {
     </div>
   )
   const i = (
-    <div
-      style={{
-        margin: '300px 50px',
-      }}
-    >
+    <div className="m-center">
       <Input
         value={input}
         onChange={(e: any) => {

@@ -6,6 +6,5 @@
  */
 export default {
   url: 'http://localhost:9001', // 服务地址
-  // url: 'http://www.ndzy01.com:3868/', // 服务地址
-  imgUrl: 'http://www.ndzy01.com:3889/upload', // 图片服务地址
+  urlOnLine: 'http://www.ndzy01.com:9005', // 服务地址
 }

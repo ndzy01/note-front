@@ -3,20 +3,23 @@ import { Button, Card, Tooltip, Pagination, message } from 'antd'
 import { DeleteOutlined, EyeOutlined, EditOutlined } from '@ant-design/icons'
 import api from '../http/index'
 import { createHashHistory } from 'history'
+
 const history = createHashHistory()
 
 export default function Home() {
   const [notes, setNotes] = useState([])
   const [page, setPage] = useState(1)
   const [maxPage, setMaxPage] = useState(0)
+
   useEffect(() => {
     api('/page', 'POST', {
       page: page,
-    }).then(res => {
+    }).then((res) => {
       setNotes(res.data.data)
       setMaxPage(res.data.totalCount)
     })
   }, [page])
+
   return (
     <div>
       {notes.map((note: any) => (
@@ -25,7 +28,7 @@ export default function Home() {
           title={note.cTime}
           extra={
             <span>
-              <span style={{ marginRight: '10px' }}>
+              <span className="m-right">
                 {' '}
                 <Tooltip title="展示">
                   <Button
@@ -37,7 +40,7 @@ export default function Home() {
                   />
                 </Tooltip>
               </span>
-              <span style={{ marginRight: '10px' }}>
+              <span className="m-right">
                 {' '}
                 <Tooltip title="编辑">
                   <Button
@@ -49,7 +52,7 @@ export default function Home() {
                   />
                 </Tooltip>
               </span>
-              <span style={{ marginRight: '10px' }}>
+              <span className="m-right">
                 {' '}
                 <Tooltip title="删除">
                   <Button
@@ -58,10 +61,10 @@ export default function Home() {
                     onClick={() => {
                       api('delNote', 'POST', {
                         id: note.id,
-                      }).then(res => {
+                      }).then((res) => {
                         api('/page', 'POST', {
                           page: page,
-                        }).then(res => {
+                        }).then((res) => {
                           setNotes(res.data.data)
                           setMaxPage(res.data.totalCount)
                         })
@@ -73,13 +76,11 @@ export default function Home() {
               </span>
             </span>
           }
-          style={{ maxWidth: '90vw' }}
+          className="m-card"
         >
           <p>{note.title}</p>
-          <p></p>
         </Card>
       ))}
-      <br />
       <Pagination
         current={page}
         onChange={(page: any) => {

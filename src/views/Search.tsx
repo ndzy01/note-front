@@ -14,7 +14,7 @@ export default function Search() {
     if (input !== '') {
       api('/search', 'POST', {
         content: input,
-      }).then(res => {
+      }).then((res) => {
         setNotes(res.data.data)
       })
     }
@@ -27,15 +27,15 @@ export default function Search() {
           setInput(e.target.value)
         }}
         placeholder="请输入！"
+        className="m-bottom"
       />
-      <br />
       {notes.map((note: any) => (
         <Card
           key={note.id}
           title={note.cTime}
           extra={
             <span>
-              <span style={{ marginRight: '10px' }}>
+              <span className="m-right">
                 {' '}
                 <Tooltip title="展示">
                   <Button
@@ -47,7 +47,7 @@ export default function Search() {
                   />
                 </Tooltip>
               </span>
-              <span style={{ marginRight: '10px' }}>
+              <span className="m-right">
                 {' '}
                 <Tooltip title="编辑">
                   <Button
@@ -59,7 +59,7 @@ export default function Search() {
                   />
                 </Tooltip>
               </span>
-              <span style={{ marginRight: '10px' }}>
+              <span className="m-right">
                 {' '}
                 <Tooltip title="删除">
                   <Button
@@ -68,10 +68,10 @@ export default function Search() {
                     onClick={() => {
                       api('/delNote', 'POST', {
                         id: note.id,
-                      }).then(res => {
+                      }).then((res) => {
                         api('/search', 'POST', {
                           content: input,
-                        }).then(res => {
+                        }).then((res) => {
                           setNotes(res.data.data)
                         })
                         message.info('已删除')
@@ -82,7 +82,7 @@ export default function Search() {
               </span>
             </span>
           }
-          style={{ maxWidth: '90vw' }}
+          className="m-card"
         >
           <p>{note.title}</p>
           <p></p>

@@ -12,7 +12,7 @@ export default function Show(props: any) {
       id: props.location.pathname.substring(
         props.location.pathname.lastIndexOf('/') + 1
       ),
-    }).then(res => {
+    }).then((res) => {
       setContent(BraftEditor.createEditorState(res.data.data.content))
       setInput(res.data.data.title)
       setMTime(res.data.data.mTime)
@@ -20,13 +20,7 @@ export default function Show(props: any) {
   }, [props])
   return (
     <div>
-      <h1
-        style={{
-          padding: '10px',
-        }}
-      >
-        {input}
-      </h1>
+      <h1 className="padding10">{input}</h1>
       <p>
         <span>最后修改时间:{mTime}</span>
       </p>
