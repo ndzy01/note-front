@@ -10,8 +10,7 @@ import settings from '../settings'
 
 const service = axios.create({
   baseURL:
-    // process.env.NODE_ENV === 'development' ? settings.url : settings.urlOnLine,
-    process.env.NODE_ENV === 'development' ? settings.urlOnLine : settings.url,
+    process.env.NODE_ENV === 'development' ? settings.url : settings.urlOnLine,
   timeout: 60000, // 请求超时时间
 })
 
