@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Card, Tooltip, Pagination, message } from 'antd'
-import { DeleteOutlined, EyeOutlined, EditOutlined } from '@ant-design/icons'
-import api from '../http/index'
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
 import { createHashHistory } from 'history'
+import apiP from '../http'
 
 const history = createHashHistory()
 
@@ -12,16 +12,16 @@ export default function Home() {
   const [maxPage, setMaxPage] = useState(0)
 
   useEffect(() => {
-    api('/page', 'POST', {
+    apiP('/page', 'POST', {
       page: page,
     }).then((res) => {
       setNotes(res.data.data)
-      setMaxPage(res.data.totalCount)
+      setMaxPage(parseInt(res.data.totalCount))
     })
   }, [page])
 
   return (
-    <div>
+    <div className="Home">
       {notes.map((note: any) => (
         <Card
           key={note.id}
@@ -29,8 +29,7 @@ export default function Home() {
           extra={
             <span>
               <span className="m-right">
-                {' '}
-                <Tooltip title="展示">
+                <Tooltip title="show">
                   <Button
                     shape="circle"
                     icon={<EyeOutlined />}
@@ -41,8 +40,7 @@ export default function Home() {
                 </Tooltip>
               </span>
               <span className="m-right">
-                {' '}
-                <Tooltip title="编辑">
+                <Tooltip title="edit">
                   <Button
                     shape="circle"
                     icon={<EditOutlined />}
@@ -53,22 +51,21 @@ export default function Home() {
                 </Tooltip>
               </span>
               <span className="m-right">
-                {' '}
-                <Tooltip title="删除">
+                <Tooltip title="delete">
                   <Button
                     shape="circle"
                     icon={<DeleteOutlined />}
                     onClick={() => {
-                      api('delNote', 'POST', {
+                      apiP('/delete', 'POST', {
                         id: note.id,
                       }).then((res) => {
-                        api('/page', 'POST', {
+                        message.success('successfully deleted')
+                        apiP('/page', 'POST', {
                           page: page,
                         }).then((res) => {
                           setNotes(res.data.data)
-                          setMaxPage(res.data.totalCount)
+                          setMaxPage(parseInt(res.data.totalCount))
                         })
-                        message.info('已删除')
                       })
                     }}
                   />
@@ -79,15 +76,24 @@ export default function Home() {
           className="m-card"
         >
           <p>{note.title}</p>
+          <p>--- Last modified time：{note.mTime}</p>
         </Card>
       ))}
-      <Pagination
-        current={page}
-        onChange={(page: any) => {
-          setPage(parseInt(page))
-        }}
-        total={maxPage}
-      />
+      <p className="centerF">
+        <span className="centerS">
+          {notes.length === 0 ? (
+            '暂无相关数据'
+          ) : (
+            <Pagination
+              current={page}
+              onChange={(page: any) => {
+                setPage(parseInt(page))
+              }}
+              total={maxPage}
+            />
+          )}
+        </span>
+      </p>
     </div>
   )
 }

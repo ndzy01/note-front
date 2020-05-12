@@ -1,19 +1,17 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import BraftEditor from 'braft-editor'
 import { Button, Input, message, Form } from 'antd'
+import { useForm } from 'antd/lib/form/Form'
 import apiP from '../http'
 import { createHashHistory } from 'history'
 
 const history = createHashHistory()
-const layout = {
-  labelCol: { span: 3 },
-  wrapperCol: { span: 18 },
-}
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
-}
 
-export default function Add() {
+export default function Edit(props: any) {
+  const [form] = useForm()
+  const [title, setTitle] = useState('')
+  const [noteId, setNoteId] = useState('')
+  const [content, setContent] = useState(BraftEditor.createEditorState(null))
   const controls: any = [
     'headings',
     'font-size',
@@ -27,26 +25,46 @@ export default function Add() {
     'link',
     'clear',
   ]
+  const layout = {
+    labelCol: { span: 3 },
+    wrapperCol: { span: 18 },
+  }
+  const tailLayout = {
+    wrapperCol: { offset: 8, span: 16 },
+  }
+
+  useEffect(() => {
+    apiP('/getNote', 'POST', {
+      id: props.location.pathname.substring(
+        props.location.pathname.lastIndexOf('/') + 1
+      ),
+    }).then((res) => {
+      setTitle(res.data.data.title)
+      setNoteId(res.data.data.id)
+      setContent(BraftEditor.createEditorState(res.data.data.content))
+    })
+  }, [props])
+
   return (
-    <div className="Add">
+    <div className="Edit">
       <Form
+        name="editForm"
         {...layout}
+        form={form}
         onFinish={(values) => {
-          apiP('/save', 'POST', {
+          apiP('/edit', 'POST', {
+            id: noteId,
             title: values.title,
             content: values.content.toHTML(),
           }).then((res) => {
-            message.success('successfully added')
+            message.success('successfully edited')
             history.push({ pathname: '/' })
           })
         }}
       >
-        <Form.Item
-          label="Text title"
-          name="title"
-          rules={[{ required: true, message: 'The title cannot be empty!' }]}
-        >
-          <Input />
+        {form.setFieldsValue({ title, content: content })}
+        <Form.Item label="Text title" name="title">
+          <Input readOnly />
         </Form.Item>
         <Form.Item
           label="Text content"

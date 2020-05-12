@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Input, Tooltip, Card, message } from 'antd'
+import { Button, Input, Tooltip, Card, message, Form } from 'antd'
 import api from '../http/index'
 import { createHashHistory } from 'history'
 import { DeleteOutlined, EyeOutlined, EditOutlined } from '@ant-design/icons'
@@ -9,6 +9,14 @@ const history = createHashHistory()
 export default function Search() {
   const [notes, setNotes] = useState([])
   const [input, setInput] = useState('')
+
+  const layout = {
+    labelCol: { span: 3 },
+    wrapperCol: { span: 18 },
+  }
+  const tailLayout = {
+    wrapperCol: { offset: 8, span: 16 },
+  }
 
   useEffect(() => {
     if (input !== '') {
@@ -20,15 +28,27 @@ export default function Search() {
     }
   }, [input])
   return (
-    <div>
-      <Input
-        value={input}
-        onChange={(e: any) => {
-          setInput(e.target.value)
+    <div className="Search">
+      <Form
+        {...layout}
+        onFinish={(values) => {
+          setInput(values.title)
         }}
-        placeholder="请输入！"
-        className="m-bottom"
-      />
+      >
+        <Form.Item
+          label="Text title"
+          name="title"
+          rules={[{ required: true, message: 'The title cannot be empty!' }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item {...tailLayout}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+
       {notes.map((note: any) => (
         <Card
           key={note.id}
@@ -36,8 +56,7 @@ export default function Search() {
           extra={
             <span>
               <span className="m-right">
-                {' '}
-                <Tooltip title="展示">
+                <Tooltip title="show">
                   <Button
                     shape="circle"
                     icon={<EyeOutlined />}
@@ -48,8 +67,7 @@ export default function Search() {
                 </Tooltip>
               </span>
               <span className="m-right">
-                {' '}
-                <Tooltip title="编辑">
+                <Tooltip title="edit">
                   <Button
                     shape="circle"
                     icon={<EditOutlined />}
@@ -60,21 +78,20 @@ export default function Search() {
                 </Tooltip>
               </span>
               <span className="m-right">
-                {' '}
-                <Tooltip title="删除">
+                <Tooltip title="delete">
                   <Button
                     shape="circle"
                     icon={<DeleteOutlined />}
                     onClick={() => {
-                      api('/delNote', 'POST', {
+                      api('/delete', 'POST', {
                         id: note.id,
                       }).then((res) => {
+                        message.success('successfully deleted')
                         api('/search', 'POST', {
                           content: input,
                         }).then((res) => {
                           setNotes(res.data.data)
                         })
-                        message.info('已删除')
                       })
                     }}
                   />
@@ -85,7 +102,7 @@ export default function Search() {
           className="m-card"
         >
           <p>{note.title}</p>
-          <p></p>
+          <p>--- Last modified time：{note.mTime}</p>
         </Card>
       ))}
     </div>

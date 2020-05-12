@@ -1,32 +1,28 @@
 import React, { useState, useEffect } from 'react'
-import BraftEditor from 'braft-editor'
-import api from '../http/index'
+import apiP from '../http'
 
-export default function Show(props: any) {
-  const [content, setContent] = useState(BraftEditor.createEditorState(null))
-  const [input, setInput] = useState('')
-  const [mTime, setMTime] = useState('')
-  const controls: any = []
+export default function Edit(props: any) {
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+  const [modifyTime, setModifyTime] = useState('')
+
   useEffect(() => {
-    api('/getNote', 'POST', {
+    apiP('/getNote', 'POST', {
       id: props.location.pathname.substring(
         props.location.pathname.lastIndexOf('/') + 1
       ),
     }).then((res) => {
-      setContent(BraftEditor.createEditorState(res.data.data.content))
-      setInput(res.data.data.title)
-      setMTime(res.data.data.mTime)
+      setTitle(res.data.data.title)
+      setContent(res.data.data.content)
+      setModifyTime(res.data.data.mTime)
     })
   }, [props])
+
   return (
-    <div>
-      <h1 className="padding10">{input}</h1>
-      <p>
-        <span>最后修改时间:{mTime}</span>
-      </p>
-      <div className="editor-wrapper">
-        <BraftEditor controls={controls} value={content} />
-      </div>
+    <div className="Show">
+      <p>--- Last modified time：{modifyTime}</p>
+      <h1>{title}</h1>
+      <div dangerouslySetInnerHTML={{ __html: content }}></div>
     </div>
   )
 }

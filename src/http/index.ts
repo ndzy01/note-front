@@ -7,16 +7,10 @@
 import request from './request'
 
 const api = (url: any, type: any, data: any) => {
-  if (data) {
-    return request({
-      url,
-      method: type,
-      data,
-    })
-  }
   return request({
     url,
-    method: 'GET',
+    method: type,
+    data,
   })
 }
 

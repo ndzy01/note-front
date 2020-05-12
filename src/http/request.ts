@@ -17,9 +17,9 @@ const service = axios.create({
 //添加一个响应拦截器
 service.interceptors.response.use(
   function (response) {
-    if (response.data.code === 400) {
-      message.error('编辑失败，内容不能为空！')
-      return Promise.reject('编辑失败！')
+    if (response.data.status === 500) {
+      message.error('服务器出错！')
+      return Promise.reject('服务器出错！')
     }
     return response
   },
