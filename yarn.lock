@@ -2534,7 +2534,12 @@ braft-finder@^0.0.19:
   resolved "https://registry.npm.taobao.org/braft-finder/download/braft-finder-0.0.19.tgz#c324d82526ed3476a93de86cc9b407f4e188bc8d"
   integrity sha1-wyTYJSbtNHapPehsybQH9OGIvI0=
 
-braft-utils@^3.0.8:
+braft-finder@^0.0.21:
+  version "0.0.21"
+  resolved "https://registry.npm.taobao.org/braft-finder/download/braft-finder-0.0.21.tgz#c64508f13ce04a53a5efcd708dc69b868428a284"
+  integrity sha1-xkUI8TzgSlOl781wjcabhoQoooQ=
+
+braft-utils@^3.0.12, braft-utils@^3.0.8:
   version "3.0.12"
   resolved "https://registry.npm.taobao.org/braft-utils/download/braft-utils-3.0.12.tgz#2b755ce1d8397d96b627b6767f74d07f25729d85"
   integrity sha1-K3Vc4dg5fZa2J7Z2f3TQfyVynYU=

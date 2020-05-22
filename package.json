@@ -14,6 +14,8 @@
     "antd": "^4.0.4",
     "axios": "^0.19.2",
     "braft-editor": "^2.3.9",
+    "braft-finder": "^0.0.21",
+    "braft-utils": "^3.0.12",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",

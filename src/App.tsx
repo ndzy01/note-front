@@ -23,8 +23,8 @@ const { Header, Footer, Content } = Layout
 function App() {
   const [input, setInput] = useState('')
   const [isShow, setIsShow] = useState(
-    // process.env.NODE_ENV === 'development' ? true : false
-    process.env.NODE_ENV === 'development' ? false : true
+    process.env.NODE_ENV === 'development' ? true : false
+    // process.env.NODE_ENV === 'development' ? false : true
   )
   const app = (
     <Layout>
